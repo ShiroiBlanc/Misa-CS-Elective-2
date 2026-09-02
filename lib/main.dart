@@ -1,644 +1,328 @@
-import 'dart:io' show Platform;
-
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 void main() {
-  runApp(const ResponsiveAdaptiveApp());
+  runApp(const LumenShopApp());
 }
 
-class ResponsiveAdaptiveApp extends StatelessWidget {
-  const ResponsiveAdaptiveApp({super.key});
+class Product {
+  const Product({
+    required this.id,
+    required this.name,
+    required this.category,
+    required this.price,
+    required this.imageUrl,
+    required this.accent,
+  });
+
+  final int id;
+  final String name;
+  final String category;
+  final double price;
+  final String imageUrl;
+  final Color accent;
+}
+
+const products = [
+  Product(
+    id: 1,
+    name: 'Arc Desk Lamp',
+    category: 'Lighting',
+    price: 68,
+    imageUrl:
+        'https://images.unsplash.com/photo-1507473885765-e6ed057f782c?w=900',
+    accent: Color(0xFFF2D9A6),
+  ),
+  Product(
+    id: 2,
+    name: 'Moss Carryall',
+    category: 'Everyday',
+    price: 84,
+    imageUrl: 'https://images.unsplash.com/photo-1544816155-12df9643f363?w=900',
+    accent: Color(0xFFC9D8C0),
+  ),
+  Product(
+    id: 3,
+    name: 'Contour Chair',
+    category: 'Furniture',
+    price: 245,
+    imageUrl:
+        'https://images.unsplash.com/photo-1503602642458-232111445657?w=900',
+    accent: Color(0xFFD9C7BC),
+  ),
+  Product(
+    id: 4,
+    name: 'Cedar Field Notes',
+    category: 'Stationery',
+    price: 22,
+    imageUrl:
+        'https://images.unsplash.com/photo-1517842645767-c639042777db?w=900',
+    accent: Color(0xFFE8D8C4),
+  ),
+  Product(
+    id: 5,
+    name: 'Stone Pour-Over',
+    category: 'Kitchen',
+    price: 46,
+    imageUrl:
+        'https://images.unsplash.com/photo-1517256064527-09c73fc73e38?w=900',
+    accent: Color(0xFFD0D8DC),
+  ),
+  Product(
+    id: 6,
+    name: 'Ocher Throw',
+    category: 'Textiles',
+    price: 96,
+    imageUrl:
+        'https://images.unsplash.com/photo-1584100936595-c0654b55a2e2?w=900',
+    accent: Color(0xFFE7C477),
+  ),
+];
+
+final appRouter = GoRouter(
+  initialLocation: '/',
+  routes: [
+    GoRoute(path: '/', builder: (context, state) => const HomePage()),
+    GoRoute(
+      path: '/product/:id',
+      builder: (context, state) => const EmptyProductDetailPage(),
+    ),
+  ],
+);
+
+class LumenShopApp extends StatelessWidget {
+  const LumenShopApp({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final bool useCupertino = !kIsWeb && Platform.isIOS;
-
-    if (useCupertino) {
-      return const CupertinoApp(
-        title: 'Responsive Adaptive Dashboard',
-        debugShowCheckedModeBanner: false,
-        theme: CupertinoThemeData(
-          primaryColor: Color(0xFF1F1F1F),
-          scaffoldBackgroundColor: Color(0xFFE7E7E7),
-        ),
-        home: DashboardPage(),
-      );
-    }
-
-    return MaterialApp(
-      title: 'Responsive Adaptive Dashboard',
+    return MaterialApp.router(
+      title: 'Lumen Supply Co.',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: const Color(0xFF1F1F1F)),
-        scaffoldBackgroundColor: const Color(0xFFE7E7E7),
         useMaterial3: true,
-      ),
-      home: const DashboardPage(),
-    );
-  }
-}
-
-class DashboardPage extends StatelessWidget {
-  const DashboardPage({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return LayoutBuilder(
-      builder: (context, constraints) {
-        final width = constraints.maxWidth;
-
-        if (width < 680) {
-          return _MobileDashboard();
-        }
-
-        if (width < 1024) {
-          return _TabletDashboard();
-        }
-
-        return _DesktopDashboard();
-      },
-    );
-  }
-}
-
-class _MobileDashboard extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    final useCupertino = !kIsWeb && Platform.isIOS;
-
-    return Scaffold(
-      backgroundColor: const Color(0xFFE7E7E7),
-      body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.all(16),
-          child: Column(
-            children: [
-              const SizedBox(height: 8),
-              Container(
-                width: 52,
-                height: 52,
-                decoration: BoxDecoration(
-                  color: const Color(0xFF1B1B1B),
-                  borderRadius: BorderRadius.circular(16),
-                ),
-                child: const Icon(Icons.favorite, color: Colors.white, size: 28),
-              ),
-              const SizedBox(height: 18),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  _miniCard(),
-                  _miniCard(),
-                  _miniCard(),
-                ],
-              ),
-              const SizedBox(height: 18),
-              Container(
-                width: double.infinity,
-                height: 110,
-                padding: const EdgeInsets.all(14),
-                decoration: BoxDecoration(
-                  color: const Color(0xFFD9D9D9),
-                  borderRadius: BorderRadius.circular(18),
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Container(
-                      width: 110,
-                      height: 14,
-                      decoration: BoxDecoration(
-                        color: const Color(0xFFBFBFBF),
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                    ),
-                    const SizedBox(height: 12),
-                    Expanded(
-                      child: Row(
-                        children: [
-                          Expanded(
-                            child: Container(
-                              decoration: BoxDecoration(
-                                color: const Color(0xFFCECECE),
-                                borderRadius: BorderRadius.circular(12),
-                              ),
-                            ),
-                          ),
-                          const SizedBox(width: 10),
-                          Expanded(
-                            child: Container(
-                              decoration: BoxDecoration(
-                                color: const Color(0xFFCECECE),
-                                borderRadius: BorderRadius.circular(12),
-                              ),
-                            ),
-                          ),
-                          const SizedBox(width: 10),
-                          Expanded(
-                            child: Container(
-                              decoration: BoxDecoration(
-                                color: const Color(0xFFCECECE),
-                                borderRadius: BorderRadius.circular(12),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              const SizedBox(height: 18),
-              Expanded(
-                child: Column(
-                  children: [
-                    _exampleListCard(),
-                    const SizedBox(height: 14),
-                    _exampleListCard(),
-                    const SizedBox(height: 14),
-                    _exampleListCard(),
-                    const SizedBox(height: 14),
-                    _exampleListCard(),
-                  ],
-                ),
-              ),
-            ],
+        colorScheme: ColorScheme.fromSeed(seedColor: const Color(0xFF274C45)),
+        scaffoldBackgroundColor: const Color(0xFFF7F5F0),
+        fontFamily: 'Georgia',
+        appBarTheme: const AppBarTheme(
+          backgroundColor: Color(0xFFF7F5F0),
+          surfaceTintColor: Colors.transparent,
+          elevation: 0,
+        ),
+        cardTheme: const CardThemeData(
+          elevation: 0,
+          color: Colors.white,
+          margin: EdgeInsets.zero,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(Radius.circular(14)),
           ),
         ),
       ),
-      bottomNavigationBar: _buildAdaptiveNavBar(useCupertino),
+      routerConfig: appRouter,
     );
   }
 }
 
-class _TabletDashboard extends StatelessWidget {
+class ShopAppBar extends StatelessWidget implements PreferredSizeWidget {
+  const ShopAppBar({this.showBack = false, super.key});
+
+  final bool showBack;
+
+  @override
+  Size get preferredSize => const Size.fromHeight(72);
+
   @override
   Widget build(BuildContext context) {
-    final useCupertino = !kIsWeb && Platform.isIOS;
-
-    return Scaffold(
-      backgroundColor: const Color(0xFFE7E7E7),
-      body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.all(18),
-          child: Column(
-            children: [
-              Container(
-                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
-                decoration: BoxDecoration(
-                  color: const Color(0xFFF4F4F4),
-                  borderRadius: BorderRadius.circular(18),
-                ),
-                child: Row(
-                  children: [
-                    const Icon(Icons.home_outlined, color: Colors.black54),
-                    const SizedBox(width: 10),
-                    const Text(
-                      'Dashboard',
-                      style: TextStyle(
-                        fontSize: 15,
-                        fontWeight: FontWeight.w600,
-                        color: Colors.black54,
-                      ),
-                    ),
-                    const Spacer(),
-                    ...List.generate(3, (index) {
-                      final icons = [
-                        Icons.settings_outlined,
-                        Icons.info_outline,
-                        Icons.logout,
-                      ];
-                      return Padding(
-                        padding: const EdgeInsets.only(left: 8),
-                        child: Container(
-                          width: 36,
-                          height: 36,
-                          decoration: BoxDecoration(
-                            color: const Color(0xFFE0E0E0),
-                            borderRadius: BorderRadius.circular(12),
-                          ),
-                          child: Icon(icons[index], size: 18, color: Colors.black54),
-                        ),
-                      );
-                    }),
-                  ],
-                ),
-              ),
-              const SizedBox(height: 18),
-              Row(
-                children: [
-                  Expanded(child: _miniCard()),
-                  const SizedBox(width: 16),
-                  Expanded(child: _miniCard()),
-                ],
-              ),
-              const SizedBox(height: 18),
-              Expanded(
-                child: Row(
-                  children: [
-                    Expanded(
-                      child: Column(
-                        children: [
-                          _exampleListCard(),
-                          const SizedBox(height: 18),
-                          _exampleListCard(),
-                          const SizedBox(height: 18),
-                          _exampleListCard(),
-                        ],
-                      ),
-                    ),
-                    const SizedBox(width: 18),
-                    SizedBox(
-                      width: 170,
-                      child: _examplePanelCard(),
-                    ),
-                  ],
-                ),
-              ),
-            ],
+    return AppBar(
+      automaticallyImplyLeading: false,
+      titleSpacing: 20,
+      leading: showBack
+          ? IconButton(
+              tooltip: 'Back to shop',
+              onPressed: () => context.go('/'),
+              icon: const Icon(Icons.arrow_back_rounded),
+            )
+          : null,
+      title: GestureDetector(
+        onTap: () => context.go('/'),
+        child: const Text(
+          'LUMEN',
+          style: TextStyle(
+            fontSize: 21,
+            fontWeight: FontWeight.w700,
+            letterSpacing: 3,
           ),
         ),
       ),
-      bottomNavigationBar: _buildAdaptiveNavBar(useCupertino),
+      actions: [
+        TextButton(onPressed: () => context.go('/'), child: const Text('Shop')),
+        const SizedBox(width: 8),
+      ],
     );
   }
 }
 
-class _DesktopDashboard extends StatelessWidget {
+class HomePage extends StatelessWidget {
+  const HomePage({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFE7E7E7),
-      body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.all(12),
-          child: Container(
-            decoration: BoxDecoration(
-              color: const Color(0xFFD7D7D7),
-              borderRadius: BorderRadius.circular(26),
-            ),
-            child: Row(
-              children: [
-                Container(
-                  width: 240,
-                  padding: const EdgeInsets.all(18),
-                  decoration: const BoxDecoration(
-                    color: Color(0xFFF4F4F4),
-                    borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(26),
-                      bottomLeft: Radius.circular(26),
-                    ),
+      appBar: const ShopAppBar(),
+      body: CustomScrollView(
+        slivers: [
+          SliverToBoxAdapter(child: _HomeHeader()),
+          SliverPadding(
+            padding: const EdgeInsets.fromLTRB(20, 8, 20, 40),
+            sliver: SliverLayoutBuilder(
+              builder: (context, constraints) {
+                final width = constraints.crossAxisExtent;
+                final columns = width >= 1000
+                    ? 4
+                    : width >= 680
+                    ? 3
+                    : 2;
+                return SliverGrid.builder(
+                  itemCount: products.length,
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: columns,
+                    crossAxisSpacing: 16,
+                    mainAxisSpacing: 22,
+                    childAspectRatio: width < 500 ? .67 : .76,
                   ),
-                  child: _SidebarContent(isCompact: false),
-                ),
-                Expanded(
-                  child: Padding(
-                    padding: const EdgeInsets.all(18),
-                    child: Row(
-                      children: [
-                        Expanded(
-                          child: Column(
-                            children: [
-                              Row(
-                                children: [
-                                  Expanded(child: _miniCard()),
-                                  const SizedBox(width: 16),
-                                  Expanded(child: _miniCard()),
-                                  const SizedBox(width: 16),
-                                  Expanded(child: _miniCard()),
-                                ],
-                              ),
-                              const SizedBox(height: 18),
-                              Expanded(
-                                child: Row(
-                                  children: [
-                                    Expanded(
-                                      child: Column(
-                                        children: [
-                                          _exampleListCard(),
-                                          const SizedBox(height: 18),
-                                          _exampleListCard(),
-                                          const SizedBox(height: 18),
-                                          _exampleListCard(),
-                                        ],
-                                      ),
-                                    ),
-                                    const SizedBox(width: 16),
-                                    SizedBox(
-                                      width: 210,
-                                      child: _examplePanelCard(),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ],
+                  itemBuilder: (context, index) =>
+                      ProductCard(product: products[index]),
+                );
+              },
             ),
           ),
-        ),
+        ],
       ),
     );
   }
 }
 
-class _SidebarContent extends StatelessWidget {
-  const _SidebarContent({required this.isCompact});
-
-  final bool isCompact;
-
+class _HomeHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final items = [
-      _NavItem(icon: Icons.dashboard_outlined, label: 'Dashboard'),
-      _NavItem(icon: Icons.settings_outlined, label: 'Settings'),
-      _NavItem(icon: Icons.info_outline, label: 'About'),
-      _NavItem(icon: Icons.logout, label: 'Logout'),
-    ];
-
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Center(
-          child: Container(
-            width: isCompact ? 42 : 58,
-            height: isCompact ? 42 : 58,
-            decoration: BoxDecoration(
-              color: const Color(0xFF1A1A1A),
-              borderRadius: BorderRadius.circular(14),
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(20, 18, 20, 24),
+      child: LayoutBuilder(
+        builder: (context, constraints) => Flex(
+          direction: constraints.maxWidth < 600
+              ? Axis.vertical
+              : Axis.horizontal,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Expanded(
+              child: Text(
+                'Objects with\na point of view.',
+                style: TextStyle(
+                  fontSize: 38,
+                  height: 1.05,
+                  fontWeight: FontWeight.w700,
+                ),
+              ),
             ),
-            child: const Icon(Icons.favorite, color: Colors.white, size: 28),
-          ),
-        ),
-        const SizedBox(height: 26),
-        ...items.map(
-          (item) => Padding(
-            padding: EdgeInsets.only(bottom: isCompact ? 14 : 22),
-            child: Row(
-              children: [
-                Icon(item.icon, size: 18, color: Colors.black54),
-                const SizedBox(width: 12),
-                Text(
-                  item.label,
+            SizedBox(
+              width: constraints.maxWidth < 600 ? double.infinity : 290,
+              child: const Padding(
+                padding: EdgeInsets.only(top: 6),
+                child: Text(
+                  'Thoughtful pieces for slower mornings, clearer desks, and rooms that feel like you.',
                   style: TextStyle(
-                    fontSize: isCompact ? 11 : 13,
-                    letterSpacing: 0.6,
-                    color: Colors.black54,
+                    fontSize: 15,
+                    height: 1.5,
+                    color: Color(0xFF66716B),
                   ),
                 ),
-              ],
+              ),
             ),
-          ),
+          ],
         ),
-      ],
+      ),
     );
   }
 }
 
-class _NavItem {
-  const _NavItem({required this.icon, required this.label});
+class ProductCard extends StatelessWidget {
+  const ProductCard({required this.product, super.key});
 
-  final IconData icon;
-  final String label;
-}
+  final Product product;
 
-Widget _buildAdaptiveNavBar(bool useCupertino) {
-  if (useCupertino) {
-    return CupertinoTabBar(
-      backgroundColor: const Color(0xFFF4F4F4),
-      activeColor: const Color(0xFF1A1A1A),
-      inactiveColor: const Color(0xFF8A8A8A),
-      items: const [
-        BottomNavigationBarItem(icon: Icon(CupertinoIcons.home), label: 'Home'),
-        BottomNavigationBarItem(icon: Icon(CupertinoIcons.settings), label: 'Settings'),
-        BottomNavigationBarItem(icon: Icon(CupertinoIcons.info_circle), label: 'About'),
-        BottomNavigationBarItem(icon: Icon(CupertinoIcons.square_arrow_left), label: 'Logout'),
-      ],
-    );
-  }
-
-  return NavigationBar(
-    backgroundColor: const Color(0xFFF3F3F3),
-    elevation: 0,
-    destinations: const [
-      NavigationDestination(icon: Icon(Icons.home_outlined), label: 'Home'),
-      NavigationDestination(icon: Icon(Icons.settings_outlined), label: 'Settings'),
-      NavigationDestination(icon: Icon(Icons.info_outline), label: 'About'),
-      NavigationDestination(icon: Icon(Icons.logout), label: 'Logout'),
-    ],
-  );
-}
-
-Widget _exampleListCard() {
-  return Container(
-    height: 100,
-    padding: const EdgeInsets.all(16),
-    decoration: BoxDecoration(
-      color: const Color(0xFFD9D9D9),
-      borderRadius: BorderRadius.circular(18),
-    ),
-    child: Row(
-      children: [
-        Container(
-          width: 56,
-          height: 56,
-          decoration: BoxDecoration(
-            color: const Color(0xFFCBCBCB),
-            borderRadius: BorderRadius.circular(14),
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      borderRadius: BorderRadius.circular(14),
+      onTap: () => context.push('/product/${product.id}'),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Expanded(child: ProductImage(product: product)),
+          const SizedBox(height: 10),
+          Text(
+            product.name,
+            style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w700),
           ),
-        ),
-        const SizedBox(width: 16),
-        Expanded(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.center,
+          const SizedBox(height: 4),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Container(
-                width: 120,
-                height: 12,
-                decoration: BoxDecoration(
-                  color: const Color(0xFFBDBDBD),
-                  borderRadius: BorderRadius.circular(8),
+              Text(
+                product.category,
+                style: const TextStyle(
+                  fontFamily: 'Arial',
+                  fontSize: 12,
+                  color: Color(0xFF758079),
                 ),
               ),
-              const SizedBox(height: 10),
-              Container(
-                width: double.infinity,
-                height: 10,
-                decoration: BoxDecoration(
-                  color: const Color(0xFFC8C8C8),
-                  borderRadius: BorderRadius.circular(8),
-                ),
-              ),
-              const SizedBox(height: 8),
-              Container(
-                width: 90,
-                height: 10,
-                decoration: BoxDecoration(
-                  color: const Color(0xFFC8C8C8),
-                  borderRadius: BorderRadius.circular(8),
+              Text(
+                '\$${product.price.toStringAsFixed(0)}',
+                style: const TextStyle(
+                  fontFamily: 'Arial',
+                  fontWeight: FontWeight.w700,
                 ),
               ),
             ],
           ),
-        ),
-      ],
-    ),
-  );
+        ],
+      ),
+    );
+  }
 }
 
-Widget _examplePanelCard() {
-  return Container(
-    height: 390,
-    padding: const EdgeInsets.all(14),
-    decoration: BoxDecoration(
-      color: const Color(0xFFD9D9D9),
-      borderRadius: BorderRadius.circular(18),
-      border: Border.all(color: const Color(0xFFBDBDBD)),
-    ),
-    child: Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Row(
-          children: [
-            Container(
-              width: 30,
-              height: 30,
-              decoration: BoxDecoration(
-                color: const Color(0xFFBFBFBF),
-                borderRadius: BorderRadius.circular(10),
-              ),
-            ),
-            const SizedBox(width: 10),
-            Expanded(
-              child: Container(
-                height: 12,
-                decoration: BoxDecoration(
-                  color: const Color(0xFFC5C5C5),
-                  borderRadius: BorderRadius.circular(8),
-                ),
-              ),
-            ),
-          ],
-        ),
-        const SizedBox(height: 16),
-        Expanded(
-          child: Container(
-            width: double.infinity,
-            padding: const EdgeInsets.all(10),
-            decoration: BoxDecoration(
-              color: const Color(0xFFCECECE),
-              borderRadius: BorderRadius.circular(16),
-            ),
-            child: Column(
-              children: [
-                Expanded(
-                  child: Container(
-                    decoration: BoxDecoration(
-                      color: const Color(0xFFBEBEBE),
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                  ),
-                ),
-              ],
-            ),
+class ProductImage extends StatelessWidget {
+  const ProductImage({required this.product, super.key});
+
+  final Product product;
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      clipBehavior: Clip.antiAlias,
+      color: product.accent,
+      child: SizedBox.expand(
+        child: Image.network(
+          product.imageUrl,
+          fit: BoxFit.cover,
+          errorBuilder: (context, error, stackTrace) => Icon(
+            Icons.image_outlined,
+            size: 54,
+            color: Colors.black.withValues(alpha: .35),
           ),
         ),
-        const SizedBox(height: 14),
-        ...List.generate(3, (index) {
-          return Padding(
-            padding: const EdgeInsets.only(bottom: 8),
-            child: Row(
-              children: [
-                Container(
-                  width: 10,
-                  height: 10,
-                  decoration: BoxDecoration(
-                    color: const Color(0xFFB8B8B8),
-                    borderRadius: BorderRadius.circular(5),
-                  ),
-                ),
-                const SizedBox(width: 8),
-                Expanded(
-                  child: Container(
-                    height: 8,
-                    decoration: BoxDecoration(
-                      color: const Color(0xFFC5C5C5),
-                      borderRadius: BorderRadius.circular(6),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          );
-        }),
-        const SizedBox(height: 10),
-        Row(
-          children: [
-            Expanded(
-              child: Container(
-                height: 26,
-                decoration: BoxDecoration(
-                  color: const Color(0xFFBFBFBF),
-                  borderRadius: BorderRadius.circular(8),
-                ),
-              ),
-            ),
-            const SizedBox(width: 8),
-            Expanded(
-              child: Container(
-                height: 26,
-                decoration: BoxDecoration(
-                  color: const Color(0xFFBFBFBF),
-                  borderRadius: BorderRadius.circular(8),
-                ),
-              ),
-            ),
-          ],
-        ),
-      ],
-    ),
-  );
+      ),
+    );
+  }
 }
 
-Widget _miniCard() {
-  return Container(
-    width: 78,
-    height: 78,
-    padding: const EdgeInsets.all(10),
-    decoration: BoxDecoration(
-      color: const Color(0xFFD8D8D8),
-      borderRadius: BorderRadius.circular(18),
-      border: Border.all(color: const Color(0xFFBEBEBE)),
-    ),
-    child: Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Container(
-          width: 26,
-          height: 26,
-          decoration: BoxDecoration(
-            color: const Color(0xFFC5C5C5),
-            borderRadius: BorderRadius.circular(8),
-          ),
-        ),
-        const Spacer(),
-        Container(
-          width: 34,
-          height: 8,
-          decoration: BoxDecoration(
-            color: const Color(0xFFB8B8B8),
-            borderRadius: BorderRadius.circular(6),
-          ),
-        ),
-      ],
-    ),
-  );
+class EmptyProductDetailPage extends StatelessWidget {
+  const EmptyProductDetailPage({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return const Scaffold(
+      appBar: ShopAppBar(showBack: true),
+      body: SizedBox.shrink(),
+    );
+  }
 }
