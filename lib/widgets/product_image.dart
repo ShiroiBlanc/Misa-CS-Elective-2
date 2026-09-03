@@ -13,7 +13,7 @@ class ProductImage extends StatelessWidget {
       clipBehavior: Clip.antiAlias,
       color: product.accent,
       child: SizedBox.expand(
-        child: Image.network(
+        child: Image.asset(
           product.imageUrl,
           fit: BoxFit.cover,
           errorBuilder: (context, error, stackTrace) => Icon(

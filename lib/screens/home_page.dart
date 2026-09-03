@@ -61,11 +61,12 @@ class _HomeHeader extends StatelessWidget {
           children: [
             const Expanded(
               child: Text(
-                'Objects with\na point of view.',
+                'Stories of\nthe jianghu.',
                 style: TextStyle(
                   fontSize: 38,
                   height: 1.05,
                   fontWeight: FontWeight.w700,
+                  color: Colors.white,
                 ),
               ),
             ),
@@ -74,11 +75,11 @@ class _HomeHeader extends StatelessWidget {
               child: const Padding(
                 padding: EdgeInsets.only(top: 6),
                 child: Text(
-                  'Thoughtful pieces for slower mornings, clearer desks, and rooms that feel like you.',
+                  'Enter a library of Chinese web novels filled with cultivation, martial arts, immortal realms, and unforgettable heroes.',
                   style: TextStyle(
                     fontSize: 15,
                     height: 1.5,
-                    color: Color(0xFF66716B),
+                    color: Color(0xFFB4B4B4),
                   ),
                 ),
               ),

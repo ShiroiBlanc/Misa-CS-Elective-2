@@ -28,11 +28,11 @@ class ProductCard extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                product.category,
+                product.genre,
                 style: const TextStyle(
                   fontFamily: 'Arial',
                   fontSize: 12,
-                  color: Color(0xFF758079),
+                  color: Color(0xFFA8A8A8),
                 ),
               ),
               Text(

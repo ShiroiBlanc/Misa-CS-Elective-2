@@ -4,7 +4,7 @@ class Product {
   const Product({
     required this.id,
     required this.name,
-    required this.category,
+    required this.genre,
     required this.price,
     required this.imageUrl,
     required this.accent,
@@ -12,7 +12,7 @@ class Product {
 
   final int id;
   final String name;
-  final String category;
+  final String genre;
   final double price;
   final String imageUrl;
   final Color accent;
@@ -21,55 +21,98 @@ class Product {
 const products = [
   Product(
     id: 1,
-    name: 'Arc Desk Lamp',
-    category: 'Lighting',
-    price: 68,
-    imageUrl:
-        'https://images.unsplash.com/photo-1507473885765-e6ed057f782c?w=900',
-    accent: Color(0xFFF2D9A6),
+    name: 'Coiling Dragon',
+    genre: 'Xianxia',
+    price: 4.99,
+    imageUrl: 'assets/covers/coiling_dragon.webp',
+    accent: Color(0xFFD8B08C),
   ),
   Product(
     id: 2,
-    name: 'Moss Carryall',
-    category: 'Everyday',
-    price: 84,
-    imageUrl: 'https://images.unsplash.com/photo-1544816155-12df9643f363?w=900',
-    accent: Color(0xFFC9D8C0),
+    name: 'Desolate Era',
+    genre: 'Xianxia',
+    price: 3.99,
+    imageUrl: 'assets/covers/desolate_era.webp',
+    accent: Color(0xFFB9C5BC),
   ),
   Product(
     id: 3,
-    name: 'Contour Chair',
-    category: 'Furniture',
-    price: 245,
-    imageUrl:
-        'https://images.unsplash.com/photo-1503602642458-232111445657?w=900',
-    accent: Color(0xFFD9C7BC),
+    name: 'A Will Eternal',
+    genre: 'Cultivation',
+    price: 5.99,
+    imageUrl: 'assets/covers/a_will_eternal.webp',
+    accent: Color(0xFFC8A39A),
   ),
   Product(
     id: 4,
-    name: 'Cedar Field Notes',
-    category: 'Stationery',
-    price: 22,
-    imageUrl:
-        'https://images.unsplash.com/photo-1517842645767-c639042777db?w=900',
-    accent: Color(0xFFE8D8C4),
+    name: 'Overgeared',
+    genre: 'LitRPG',
+    price: 4.99,
+    imageUrl: 'assets/covers/overgeared.webp',
+    accent: Color(0xFFD6B56F),
   ),
   Product(
     id: 5,
-    name: 'Stone Pour-Over',
-    category: 'Kitchen',
-    price: 46,
-    imageUrl:
-        'https://images.unsplash.com/photo-1517256064527-09c73fc73e38?w=900',
-    accent: Color(0xFFD0D8DC),
+    name: 'Young Noble Be Monster Slaying',
+    genre: 'Xianxia',
+    price: 4.99,
+    imageUrl: 'assets/covers/young_noble_be_monster_slaying.webp',
+    accent: Color(0xFFB9A7C8),
   ),
   Product(
     id: 6,
-    name: 'Ocher Throw',
-    category: 'Textiles',
-    price: 96,
-    imageUrl:
-        'https://images.unsplash.com/photo-1584100936595-c0654b55a2e2?w=900',
-    accent: Color(0xFFE7C477),
+    name: 'Genius Archer\'s Streaming',
+    genre: 'Sports',
+    price: 4.99,
+    imageUrl: 'assets/covers/genius_archers_streaming.webp',
+    accent: Color(0xFFAABFD3),
+  ),
+  Product(
+    id: 7,
+    name: 'Perfect World',
+    genre: 'Fantasy',
+    price: 4.99,
+    imageUrl: 'assets/covers/perfect_world.webp',
+    accent: Color(0xFFC9B18A),
+  ),
+  Product(
+    id: 8,
+    name: 'Yama Rising',
+    genre: 'Dark Fantasy',
+    price: 5.99,
+    imageUrl: 'assets/covers/yama_rising.webp',
+    accent: Color(0xFF9FA9B8),
+  ),
+  Product(
+    id: 9,
+    name: 'Ranker\'s Return',
+    genre: 'LitRPG',
+    price: 3.99,
+    imageUrl: 'assets/covers/rankers_return.webp',
+    accent: Color(0xFFB4C7D0),
+  ),
+  Product(
+    id: 10,
+    name: 'A Blind Swordsman\'s Sword Coffin',
+    genre: 'Xianxia',
+    price: 5.99,
+    imageUrl: 'assets/covers/blind_swordsmans_sword_coffin.webp',
+    accent: Color(0xFFB99F90),
+  ),
+  Product(
+    id: 11,
+    name: 'Descent of the Demon Master',
+    genre: 'Wuxia',
+    price: 4.99,
+    imageUrl: 'assets/covers/descent_of_the_demon_master.webp',
+    accent: Color(0xFFC1A4A4),
+  ),
+  Product(
+    id: 12,
+    name: 'The Charm of Soul Pets',
+    genre: 'Action',
+    price: 4.99,
+    imageUrl: 'assets/covers/charm_of_soul_pets.webp',
+    accent: Color(0xFFD6B56F),
   ),
 ];
