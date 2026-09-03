@@ -17,11 +17,16 @@ class ProductCard extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Expanded(child: ProductImage(product: product)),
+          AspectRatio(
+            aspectRatio: .8,
+            child: ProductImage(product: product),
+          ),
           const SizedBox(height: 10),
           Text(
             product.name,
-            style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w700),
+            style: Theme.of(context).textTheme.titleMedium,
+            maxLines: 2,
+            overflow: TextOverflow.ellipsis,
           ),
           const SizedBox(height: 4),
           Row(
@@ -29,18 +34,13 @@ class ProductCard extends StatelessWidget {
             children: [
               Text(
                 product.genre,
-                style: const TextStyle(
-                  fontFamily: 'Arial',
-                  fontSize: 12,
-                  color: Color(0xFFA8A8A8),
-                ),
+                style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                      color: Theme.of(context).colorScheme.onSurfaceVariant,
+                    ),
               ),
               Text(
                 '\$${product.price.toStringAsFixed(0)}',
-                style: const TextStyle(
-                  fontFamily: 'Arial',
-                  fontWeight: FontWeight.w700,
-                ),
+                style: Theme.of(context).textTheme.labelLarge,
               ),
             ],
           ),

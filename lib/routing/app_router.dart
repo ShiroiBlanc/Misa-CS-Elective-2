@@ -13,7 +13,7 @@ final appRouter = GoRouter(
       builder: (context, state) {
         final productId = int.parse(state.pathParameters['id']!);
         final product = products.firstWhere((item) => item.id == productId);
-        return EmptyProductDetailPage(product: product);
+        return ProductDetailPage(product: product);
       },
     ),
   ],

@@ -12,34 +12,36 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: const ShopAppBar(),
-      body: CustomScrollView(
-        slivers: [
-          const SliverToBoxAdapter(child: _HomeHeader()),
-          SliverPadding(
-            padding: const EdgeInsets.fromLTRB(20, 8, 20, 40),
-            sliver: SliverLayoutBuilder(
-              builder: (context, constraints) {
-                final width = constraints.crossAxisExtent;
-                final columns = width >= desktopBreakpoint
-                    ? 4
-                    : width >= tabletBreakpoint
-                    ? 3
-                    : 2;
-                return SliverGrid.builder(
+      body: LayoutBuilder(
+        builder: (context, constraints) {
+          final width = constraints.maxWidth - 40;
+          final columns = width >= desktopBreakpoint
+              ? 4
+              : width >= tabletBreakpoint
+              ? 3
+              : 2;
+          final cellWidth = (width - ((columns - 1) * 16)) / columns;
+          final tileHeight = cellWidth / .8 + 120;
+          return Column(
+            children: [
+              const _HomeHeader(),
+              Expanded(
+                child: GridView.builder(
+                  padding: const EdgeInsets.fromLTRB(20, 8, 20, 40),
                   itemCount: products.length,
                   gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: columns,
                     crossAxisSpacing: 16,
                     mainAxisSpacing: 22,
-                    childAspectRatio: width < 500 ? .67 : .76,
+                    mainAxisExtent: tileHeight,
                   ),
                   itemBuilder: (context, index) =>
                       ProductCard(product: products[index]),
-                );
-              },
-            ),
-          ),
-        ],
+                ),
+              ),
+            ],
+          );
+        },
       ),
     );
   }
@@ -50,43 +52,59 @@ class _HomeHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.fromLTRB(20, 18, 20, 24),
-      child: LayoutBuilder(
-        builder: (context, constraints) => Flex(
-          direction: constraints.maxWidth < 600
-              ? Axis.vertical
-              : Axis.horizontal,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const Expanded(
-              child: Text(
-                'Stories of\nthe jianghu.',
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        return Padding(
+          padding: EdgeInsets.fromLTRB(
+            20,
+            constraints.maxWidth < 600 ? 8 : 18,
+            20,
+            constraints.maxWidth < 600 ? 8 : 24,
+          ),
+          child: Builder(
+            builder: (context) {
+              final textTheme = Theme.of(context).textTheme;
+              final description = Text(
+                'Enter a library of Chinese web novels filled with cultivation, martial arts, immortal realms, and unforgettable heroes.',
                 style: TextStyle(
-                  fontSize: 38,
-                  height: 1.05,
-                  fontWeight: FontWeight.w700,
-                  color: Colors.white,
+                  color: Theme.of(context).colorScheme.onSurfaceVariant,
                 ),
-              ),
-            ),
-            SizedBox(
-              width: constraints.maxWidth < 600 ? double.infinity : 290,
-              child: const Padding(
-                padding: EdgeInsets.only(top: 6),
-                child: Text(
-                  'Enter a library of Chinese web novels filled with cultivation, martial arts, immortal realms, and unforgettable heroes.',
-                  style: TextStyle(
-                    fontSize: 15,
-                    height: 1.5,
-                    color: Color(0xFFB4B4B4),
+              );
+
+              if (constraints.maxWidth < 600) {
+                return Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Stories of\nthe jianghu.',
+                      style: textTheme.headlineSmall,
+                    ),
+                  ],
+                );
+              }
+
+              return Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Expanded(
+                    child: Text(
+                      'Stories of\nthe jianghu.',
+                      style: textTheme.displaySmall,
+                    ),
                   ),
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
+                  SizedBox(
+                    width: 290,
+                    child: Padding(
+                      padding: const EdgeInsets.only(top: 6),
+                      child: description,
+                    ),
+                  ),
+                ],
+              );
+            },
+          ),
+        );
+      },
     );
   }
 }

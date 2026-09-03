@@ -19,7 +19,7 @@ class ProductImage extends StatelessWidget {
           errorBuilder: (context, error, stackTrace) => Icon(
             Icons.image_outlined,
             size: 54,
-            color: Colors.black.withValues(alpha: .35),
+            color: Theme.of(context).colorScheme.onSurface.withValues(alpha: .35),
           ),
         ),
       ),

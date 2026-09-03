@@ -23,38 +23,21 @@ class ShopAppBar extends StatelessWidget implements PreferredSizeWidget {
           : null,
       title: GestureDetector(
         onTap: () => context.go('/'),
-        child: const Row(
+        child: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
             Text(
               '龙',
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 24,
-                fontWeight: FontWeight.w700,
-                height: 1,
-              ),
+              style: Theme.of(context).textTheme.titleLarge,
             ),
             SizedBox(width: 8),
             Text(
               'WUXIA',
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 21,
-                fontWeight: FontWeight.w700,
-                letterSpacing: 3,
-              ),
+              style: Theme.of(context).appBarTheme.titleTextStyle,
             ),
           ],
         ),
       ),
-      actions: [
-        TextButton(
-          onPressed: () => context.go('/'),
-          child: const Text('Library', style: TextStyle(color: Color(0xFF62B7F5))),
-        ),
-        const SizedBox(width: 8),
-      ],
     );
   }
 }

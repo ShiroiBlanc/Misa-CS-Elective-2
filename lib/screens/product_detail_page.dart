@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import '../models/product.dart';
 import '../widgets/shop_app_bar.dart';
 
-class EmptyProductDetailPage extends StatelessWidget {
-  const EmptyProductDetailPage({required this.product, super.key});
+class ProductDetailPage extends StatelessWidget {
+  const ProductDetailPage({required this.product, super.key});
 
   final Product product;
 
