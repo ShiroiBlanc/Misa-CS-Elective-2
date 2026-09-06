@@ -116,3 +116,18 @@ const products = [
     accent: Color(0xFFD6B56F),
   ),
 ];
+
+const productSynopsis = <int, String>{
+  1: 'Linley Baruch inherits the bloodline of a legendary clan and begins a journey through magic, monsters, and distant realms.',
+  2: 'Ji Ning is reborn into a world of immortals and fiendgods, determined to become strong enough to protect everything he loves.',
+  3: 'Bai Xiaochun fears death more than anything, but his strange path through cultivation keeps pulling him toward immortal legends.',
+  4: 'Grid discovers a legendary class inside a virtual reality game and slowly forges a new life as a master blacksmith and adventurer.',
+  5: 'A young disciple with a mysterious pagoda takes on monsters, eccentric sect members, and a journey much larger than expected.',
+  6: 'A competitive gamer returns to the virtual world with unfinished goals, new rivals, and a chance to reclaim the top rank.',
+  7: 'A young cultivator rises from the wilderness while ancient clans, powerful beasts, and forgotten mysteries reshape his world.',
+  8: 'Qin Ye must rebuild the underworld after Hell collapses and restless spirits begin crossing into the mortal realm.',
+  9: 'A former top player returns to a virtual reality game to rebuild his life through skill, competition, and impossible quests.',
+  10: 'Li Guanqi carries a mysterious sword coffin while searching for the truth behind his past, his sect, and the spirit within the box.',
+  11: 'A once-powerful demon master tries to live an ordinary modern life, but the world keeps forcing him back into conflict.',
+  12: 'A soul-pet trainer survives dangerous islands and grows alongside a small companion on a quest to become a true master.',
+};

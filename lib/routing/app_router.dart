@@ -3,6 +3,8 @@ import 'package:go_router/go_router.dart';
 import '../models/product.dart';
 import '../screens/product_detail_page.dart';
 import '../screens/home_page.dart';
+import '../screens/cart_page.dart';
+import '../screens/checkout_confirmation_page.dart';
 
 final appRouter = GoRouter(
   initialLocation: '/',
@@ -15,6 +17,11 @@ final appRouter = GoRouter(
         final product = products.firstWhere((item) => item.id == productId);
         return ProductDetailPage(product: product);
       },
+    ),
+    GoRoute(path: '/cart', builder: (context, state) => const CartPage()),
+    GoRoute(
+      path: '/checkout',
+      builder: (context, state) => const CheckoutConfirmationPage(),
     ),
   ],
 );

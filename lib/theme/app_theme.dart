@@ -66,3 +66,67 @@ final appTheme = ThemeData(
     ),
   ),
 );
+
+final lightTheme = ThemeData(
+  useMaterial3: true,
+  colorScheme: ColorScheme.fromSeed(
+    seedColor: const Color(0xFF1689E8),
+    brightness: Brightness.light,
+  ),
+  scaffoldBackgroundColor: const Color(0xFFF4F4F4),
+  fontFamily: 'serif',
+  textTheme: const TextTheme(
+    displaySmall: TextStyle(
+      fontSize: 32,
+      height: 1.05,
+      fontWeight: FontWeight.w700,
+    ),
+    headlineSmall: TextStyle(
+      fontSize: 26,
+      height: 1.05,
+      fontWeight: FontWeight.w700,
+    ),
+    bodyMedium: TextStyle(
+      fontSize: 15,
+      height: 1.5,
+    ),
+    titleMedium: TextStyle(
+      fontSize: 16,
+      fontWeight: FontWeight.w700,
+    ),
+    labelSmall: TextStyle(
+      fontFamily: 'Arial',
+      fontSize: 12,
+    ),
+    labelLarge: TextStyle(
+      fontFamily: 'Arial',
+      fontWeight: FontWeight.w700,
+    ),
+  ),
+  textButtonTheme: TextButtonThemeData(
+    style: TextButton.styleFrom(
+      foregroundColor: Color(0xFF096EBE),
+    ),
+  ),
+  appBarTheme: const AppBarTheme(
+    backgroundColor: Color(0xFFFFFFFF),
+    surfaceTintColor: Colors.transparent,
+    elevation: 0,
+    foregroundColor: Color(0xFF171717),
+    titleTextStyle: TextStyle(
+      fontFamily: 'serif',
+      fontSize: 21,
+      fontWeight: FontWeight.w700,
+      letterSpacing: 3,
+      color: Color(0xFF171717),
+    ),
+  ),
+  cardTheme: const CardThemeData(
+    elevation: 0,
+    color: Colors.white,
+    margin: EdgeInsets.zero,
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.all(Radius.circular(14)),
+    ),
+  ),
+);
