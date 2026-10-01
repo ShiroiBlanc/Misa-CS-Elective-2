@@ -1,18 +1,21 @@
 import 'package:flutter/material.dart';
 
-import 'routing/app_router.dart';
-import 'theme/app_theme.dart';
+import 'screens/pokedex_list_screen.dart';
 
-class WuxiaShopApp extends StatelessWidget {
-  const WuxiaShopApp({super.key});
+class PokedexApp extends StatelessWidget {
+  const PokedexApp({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp.router(
-      title: 'Wuxia',
+    return MaterialApp(
+      title: 'Pokédex List',
       debugShowCheckedModeBanner: false,
-      theme: appTheme,
-      routerConfig: appRouter,
+      theme: ThemeData(
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.red),
+        useMaterial3: true,
+        scaffoldBackgroundColor: const Color(0xFFF5F5F5),
+      ),
+      home: const PokedexListScreen(),
     );
   }
 }
