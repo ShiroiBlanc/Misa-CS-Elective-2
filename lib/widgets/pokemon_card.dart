@@ -29,19 +29,10 @@ class PokemonCard extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text(
-              '#${pokemon.id}',
-              style: const TextStyle(
-                fontSize: 12,
-                fontWeight: FontWeight.w700,
-                color: Colors.grey,
-              ),
-            ),
-            const SizedBox(height: 8),
             Image.network(
               pokemon.imageUrl,
-              height: 80,
-              width: 80,
+              height: 100,
+              width: 100,
               loadingBuilder: (context, child, loadingProgress) {
                 if (loadingProgress == null) return child;
                 return const Center(
@@ -53,7 +44,7 @@ class PokemonCard extends StatelessWidget {
                 );
               },
               errorBuilder: (context, error, stackTrace) {
-                return const Icon(Icons.catching_pokemon, size: 52);
+                return const Icon(Icons.catching_pokemon, size: 64);
               },
             ),
             const SizedBox(height: 8),
@@ -63,6 +54,15 @@ class PokemonCard extends StatelessWidget {
               style: const TextStyle(
                 fontSize: 16,
                 fontWeight: FontWeight.w700,
+              ),
+            ),
+            const SizedBox(height: 4),
+            Text(
+              '#${pokemon.id}',
+              style: const TextStyle(
+                fontSize: 12,
+                fontWeight: FontWeight.w700,
+                color: Colors.grey,
               ),
             ),
           ],
