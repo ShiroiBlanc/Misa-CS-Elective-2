@@ -22,10 +22,20 @@ class PokemonService {
         return _fallbackPokemon();
       }
 
-      return results
-          .map((item) => Pokemon.fromApi(item as Map<String, dynamic>))
-          .take(30)
-          .toList();
+      return await Future.wait(
+        results.take(30).map((item) async {
+          final summary = item as Map<String, dynamic>;
+          final detailsResponse = await http.get(
+            Uri.parse(summary['url'] as String),
+          );
+          if (detailsResponse.statusCode == 200) {
+            return Pokemon.fromApi(
+              jsonDecode(detailsResponse.body) as Map<String, dynamic>,
+            );
+          }
+          return Pokemon.fromApi(summary);
+        }),
+      );
     } catch (_) {
       return _fallbackPokemon();
     }
@@ -38,7 +48,8 @@ class PokemonService {
         id: index + 1,
         name: 'pokemon-${index + 1}',
         imageUrl:
-            'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${index + 1}.png',
+            'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${index + 1}.png',
+        types: const ['unknown'],
       ),
     );
   }
