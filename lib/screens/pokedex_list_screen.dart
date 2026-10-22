@@ -17,15 +17,29 @@ class PokedexListScreen extends ConsumerWidget {
       appBar: AppBar(
         title: const Text('Pokédex'),
         actions: [
-          IconButton(
+          PopupMenuButton<void>(
             tooltip: 'Favorites',
             icon: Badge(
               isLabelVisible: state.favorites.isNotEmpty,
               label: Text('${state.favorites.length}'),
               child: const Icon(Icons.favorite),
             ),
-            onPressed: () =>
-                _showFavorites(context, state.favorites, state.nicknames),
+            constraints: const BoxConstraints(
+              minWidth: 336,
+              maxWidth: 336,
+              maxHeight: 500,
+            ),
+            menuPadding: EdgeInsets.zero,
+            itemBuilder: (context) => [
+              PopupMenuItem<void>(
+                enabled: false,
+                padding: EdgeInsets.zero,
+                child: _favoritesContent(
+                  state.favorites,
+                  state.nicknames,
+                ),
+              ),
+            ],
           ),
         ],
       ),
@@ -157,46 +171,82 @@ class PokedexListScreen extends ConsumerWidget {
     }
   }
 
-  void _showFavorites(
-    BuildContext context,
+  Widget _favoritesContent(
     List<Pokemon> favorites,
     Map<int, String> nicknames,
   ) {
-    showModalBottomSheet<void>(
-      context: context,
-      showDragHandle: true,
-      builder: (context) => SafeArea(
-        child: favorites.isEmpty
-            ? const SizedBox(
-                height: 180,
-                child: Center(child: Text('No favorite Pokémon yet.')),
-              )
-            : ListView(
-                shrinkWrap: true,
-                children: [
-                  const ListTile(
-                    title: Text(
-                      'Favorite Pokémon',
-                      style: TextStyle(fontWeight: FontWeight.bold),
-                    ),
+    if (favorites.isEmpty) {
+      return const SizedBox(
+        height: 96,
+        width: 336,
+        child: Center(child: Text('No favorite Pokémon yet.')),
+      );
+    }
+
+    return SizedBox(
+      width: 336,
+      child: Padding(
+        padding: const EdgeInsets.fromLTRB(12, 8, 12, 10),
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Padding(
+                padding: EdgeInsets.fromLTRB(0, 4, 0, 8),
+                child: Text(
+                  'Favorite Pokémon',
+                  style: TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.w600,
                   ),
-                  ...favorites.map(
-                    (pokemon) => ListTile(
-                      leading: Image.network(
-                        pokemon.imageUrl,
-                        width: 48,
-                        height: 48,
-                      ),
-                      title: Text(
-                        nicknames[pokemon.id] ?? pokemon.name.toUpperCase(),
-                      ),
-                      subtitle: Text(
-                        '#${pokemon.id}  ${pokemon.types.join(' / ')}',
-                      ),
-                    ),
-                  ),
-                ],
+                ),
               ),
+              ...favorites.map(
+                (pokemon) => Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 4),
+                  child: Row(
+                    children: [
+                      Image.network(
+                        pokemon.imageUrl,
+                        width: 42,
+                        height: 42,
+                        fit: BoxFit.contain,
+                      ),
+                      const SizedBox(width: 12),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Text(
+                              (nicknames[pokemon.id] ?? pokemon.name)
+                                  .toUpperCase(),
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                              style: const TextStyle(
+                                fontSize: 14,
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                            const SizedBox(height: 2),
+                            Text(
+                              '#${pokemon.id}  ${pokemon.types.join(' / ')}',
+                              style: TextStyle(
+                                fontSize: 12,
+                                color: Colors.grey.shade700,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
       ),
     );
   }
