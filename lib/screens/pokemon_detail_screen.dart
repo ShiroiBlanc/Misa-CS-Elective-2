@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../providers/pokemon_provider.dart';
 
-class PokemonDetailScreen extends StatelessWidget {
+class PokemonDetailScreen extends ConsumerWidget {
   const PokemonDetailScreen({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    final pokemon = context.watch<PokemonProvider>().selectedPokemon;
+  Widget build(BuildContext context, WidgetRef ref) {
+    final pokemon = ref.watch(pokemonProvider).selectedPokemon;
 
     return Scaffold(
       appBar: AppBar(

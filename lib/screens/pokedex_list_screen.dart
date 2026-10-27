@@ -1,15 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../providers/pokemon_provider.dart';
 import '../widgets/pokemon_card.dart';
 import 'pokemon_detail_screen.dart';
 
-class PokedexListScreen extends StatelessWidget {
+class PokedexListScreen extends ConsumerWidget {
   const PokedexListScreen({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final snapshot = ref.watch(pokemonProvider);
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Pokédex List'),
@@ -17,14 +19,14 @@ class PokedexListScreen extends StatelessWidget {
         foregroundColor: Colors.white,
         actions: [
           IconButton(
-            onPressed: () => context.read<PokemonProvider>().fetchPokemon(),
+            onPressed: () => ref.read(pokemonProvider.notifier).fetchPokemon(),
             tooltip: 'Refresh Pokémon',
             icon: const Icon(Icons.refresh),
           ),
         ],
       ),
-      body: Consumer<PokemonProvider>(
-        builder: (context, snapshot, child) {
+      body: Builder(
+        builder: (context) {
           if (snapshot.status == PokemonStatus.loading ||
               snapshot.status == PokemonStatus.initial) {
             return const Center(child: CircularProgressIndicator());
@@ -33,7 +35,8 @@ class PokedexListScreen extends StatelessWidget {
           if (snapshot.status == PokemonStatus.error) {
             return _ErrorState(
               message: snapshot.errorMessage ?? 'Unable to load Pokémon data.',
-              onRetry: snapshot.fetchPokemon,
+              onRetry: () =>
+                  ref.read(pokemonProvider.notifier).fetchPokemon(),
             );
           }
 
@@ -42,7 +45,7 @@ class PokedexListScreen extends StatelessWidget {
           }
 
           return RefreshIndicator(
-            onRefresh: snapshot.fetchPokemon,
+            onRefresh: () => ref.read(pokemonProvider.notifier).fetchPokemon(),
             child: LayoutBuilder(
               builder: (context, constraints) {
                 final crossAxisCount = constraints.maxWidth > 900
@@ -65,7 +68,7 @@ class PokedexListScreen extends StatelessWidget {
                     final pokemon = snapshot.pokemon[index];
                     return GestureDetector(
                       onTap: () {
-                        snapshot.selectPokemon(pokemon);
+                        ref.read(pokemonProvider.notifier).selectPokemon(pokemon);
                         Navigator.of(context).push(
                           MaterialPageRoute(
                             builder: (_) => const PokemonDetailScreen(),
