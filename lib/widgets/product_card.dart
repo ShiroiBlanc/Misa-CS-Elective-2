@@ -17,10 +17,7 @@ class ProductCard extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          AspectRatio(
-            aspectRatio: .8,
-            child: ProductImage(product: product),
-          ),
+          AspectRatio(aspectRatio: .8, child: ProductImage(product: product)),
           const SizedBox(height: 10),
           Text(
             product.name,
@@ -33,13 +30,13 @@ class ProductCard extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                product.genre,
+                product.conditionLabel,
                 style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                      color: Theme.of(context).colorScheme.onSurfaceVariant,
-                    ),
+                  color: Theme.of(context).colorScheme.onSurfaceVariant,
+                ),
               ),
               Text(
-                '\$${product.price.toStringAsFixed(0)}',
+                '₱${product.price.toStringAsFixed(2)}',
                 style: Theme.of(context).textTheme.labelLarge,
               ),
             ],

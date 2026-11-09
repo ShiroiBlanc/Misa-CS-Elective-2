@@ -7,16 +7,14 @@ import 'app.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await dotenv.load();
+  await dotenv.load(isOptional: true);
 
   await Supabase.initialize(
     url: dotenv.get('SUPABASE_URL'),
     publishableKey: dotenv.get('SUPABASE_ANON_KEY'),
   );
 
-  runApp(
-    const ProviderScope(child: PokedexApp()),
-  );
+  runApp(const ProviderScope(child: WuxiaApp()));
 }
 
 final supabase = Supabase.instance.client;

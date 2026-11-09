@@ -1,21 +1,23 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import 'screens/pokedex_list_screen.dart';
+import 'routing/app_router.dart';
+import 'theme/app_theme.dart';
+import 'providers/theme_provider.dart';
 
-class PokedexApp extends StatelessWidget {
-  const PokedexApp({super.key});
+class WuxiaApp extends ConsumerWidget {
+  const WuxiaApp({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Pokédex List',
+  Widget build(BuildContext context, WidgetRef ref) {
+    final themeMode = ref.watch(themeModeProvider);
+    return MaterialApp.router(
+      title: 'Wuxia',
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.red),
-        useMaterial3: true,
-        scaffoldBackgroundColor: const Color(0xFFF5F5F5),
-      ),
-      home: const PokedexListScreen(),
+      theme: lightAppTheme,
+      darkTheme: appTheme,
+      themeMode: themeMode,
+      routerConfig: appRouter,
     );
   }
 }
