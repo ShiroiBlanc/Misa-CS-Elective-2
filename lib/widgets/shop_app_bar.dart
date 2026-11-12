@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
+import '../main.dart';
 import '../providers/theme_provider.dart';
 
 class ShopAppBar extends ConsumerWidget implements PreferredSizeWidget {
@@ -50,6 +52,21 @@ class ShopAppBar extends ConsumerWidget implements PreferredSizeWidget {
           icon: Icon(
             isDark ? Icons.light_mode_outlined : Icons.dark_mode_outlined,
           ),
+        ),
+        IconButton(
+          tooltip: 'Sign out',
+          onPressed: () async {
+            try {
+              await supabase.auth.signOut();
+            } on AuthException catch (error) {
+              if (context.mounted) {
+                ScaffoldMessenger.of(
+                  context,
+                ).showSnackBar(SnackBar(content: Text(error.message)));
+              }
+            }
+          },
+          icon: const Icon(Icons.logout),
         ),
         const SizedBox(width: 12),
       ],
