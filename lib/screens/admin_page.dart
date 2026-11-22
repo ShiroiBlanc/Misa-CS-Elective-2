@@ -67,8 +67,14 @@ class _AdminPageState extends State<AdminPage> {
     );
     if (save != true || controller.text.trim().isEmpty) return;
     try {
+      final name = controller.text.trim();
+      final slug = name
+          .toLowerCase()
+          .replaceAll(RegExp(r'[^\w]+'), '-')
+          .replaceAll(RegExp(r'^-+|-+$'), '');
       await supabase.from('categories').insert({
-        'name': controller.text.trim(),
+        'name': name,
+        'slug': slug,
       });
       if (mounted) {
         ScaffoldMessenger.of(
