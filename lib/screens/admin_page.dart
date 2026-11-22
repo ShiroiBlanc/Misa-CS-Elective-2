@@ -72,9 +72,10 @@ class _AdminPageState extends State<AdminPage> {
           .toLowerCase()
           .replaceAll(RegExp(r'[^\w]+'), '-')
           .replaceAll(RegExp(r'^-+|-+$'), '');
-      await supabase
-          .from('categories')
-          .upsert({'name': name, 'slug': slug}, onConflict: 'slug');
+      await supabase.from('categories').upsert({
+        'name': name,
+        'slug': slug,
+      }, onConflict: 'slug');
       if (mounted) {
         ScaffoldMessenger.of(
           context,

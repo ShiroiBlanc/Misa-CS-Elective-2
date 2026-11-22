@@ -39,11 +39,8 @@ class _AuthPageState extends State<AuthPage> {
         );
       }
       if (_isSignUp) {
-        if (_firstname.text.trim().isEmpty ||
-            _lastname.text.trim().isEmpty) {
-          throw const AuthException(
-            'Enter your first name and last name.',
-          );
+        if (_firstname.text.trim().isEmpty || _lastname.text.trim().isEmpty) {
+          throw const AuthException('Enter your first name and last name.');
         }
         final response = await supabase.auth.signUp(
           email: email,

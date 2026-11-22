@@ -22,13 +22,14 @@ class CartNotifier extends Notifier<List<CartLine>> {
   List<CartLine> build() => const [];
 
   void add(Product product) {
+    if (product.stock <= 0) return;
     final index = state.indexWhere((line) => line.product.id == product.id);
     if (index == -1) {
       state = [...state, CartLine(product: product, quantity: 1)];
     } else {
       final lines = [...state];
       final line = lines[index];
-      if (line.quantity < 99) {
+      if (line.quantity < line.product.stock) {
         lines[index] = line.copyWith(quantity: line.quantity + 1);
       }
       state = lines;
