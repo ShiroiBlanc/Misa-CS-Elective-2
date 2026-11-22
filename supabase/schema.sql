@@ -86,8 +86,8 @@ values
   ('xianxia', 'xianxia'),
   ('wuxia', 'wuxia'),
   ('xuanhuan', 'xuanhuan')
-on conflict (name) do update
-set slug = excluded.slug;
+on conflict (slug) do update
+set name = excluded.name;
 
 create or replace function public.handle_new_user()
 returns trigger
