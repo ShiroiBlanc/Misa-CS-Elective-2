@@ -73,8 +73,11 @@ class _CatalogContentState extends ConsumerState<_CatalogContent> {
             ? 5
             : width >= tabletBreakpoint
             ? 3
+            : constraints.maxWidth < 360
+            ? 1
             : 2;
         final cellWidth = (width - ((columns - 1) * 16)) / columns;
+        final cellHeight = columns == 1 ? 340.0 : cellWidth / .8 + 104;
         return Column(
           children: [
             if (widget.state.featuredProducts.isNotEmpty)
@@ -99,7 +102,9 @@ class _CatalogContentState extends ConsumerState<_CatalogContent> {
                   FilledButton.tonalIcon(
                     onPressed: loading ? null : () => _showFilters(context),
                     icon: const Icon(Icons.tune),
-                    label: const Text('Filters'),
+                    label: constraints.maxWidth < 430
+                        ? const Text('Filter')
+                        : const Text('Filters'),
                   ),
                 ],
               ),
@@ -114,7 +119,7 @@ class _CatalogContentState extends ConsumerState<_CatalogContent> {
                         crossAxisCount: columns,
                         crossAxisSpacing: 12,
                         mainAxisSpacing: 14,
-                        mainAxisExtent: cellWidth / .8 + 104,
+                        mainAxisExtent: cellHeight,
                       ),
                       itemBuilder: (context, index) => ProductCard(
                         key: ValueKey(widget.state.products[index].id),
@@ -371,10 +376,10 @@ class _FeaturedRow extends StatelessWidget {
       child: LayoutBuilder(
         builder: (context, constraints) {
           final compact = constraints.maxWidth < 760;
-          const featureHeight = 244.0;
+          final featureHeight = compact ? 140.0 : 244.0;
           final featuredCard = SizedBox(
             width: compact ? double.infinity : constraints.maxWidth * .6,
-            height: compact ? 170 : featureHeight,
+            height: featureHeight,
             child: Card(
               clipBehavior: Clip.antiAlias,
               child: Stack(
@@ -436,14 +441,7 @@ class _FeaturedRow extends StatelessWidget {
             ),
           );
           return compact
-              ? Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    featuredCard,
-                    const SizedBox(height: 10),
-                    _Announcements(products: products),
-                  ],
-                )
+              ? featuredCard
               : Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
