@@ -21,62 +21,37 @@ class ProductRepository {
     final start = page * pageSize;
     final end = start + pageSize - 1;
     dynamic query = supabase
-        .from('listings')
+        .from('products')
         .select(
-          'id, title, description, price, category, condition, '
-          'listing_images(storage_path)',
+          'id, name, description, price, stock, image_url, '
+          'categories!inner(name)',
         )
-        .eq('status', 'active')
         .gte('price', minimumPrice)
         .lte('price', maximumPrice);
-    if (search.isNotEmpty) query = query.ilike('title', '%$search%');
-    if (category != null) query = query.eq('category', category);
+    if (search.isNotEmpty) query = query.ilike('name', '%$search%');
+    if (category != null) query = query.eq('categories.name', category);
     query = query.order(
       sort == 'price_low' || sort == 'price_high' ? 'price' : 'created_at',
       ascending: sort != 'price_high',
     );
     final response = await query.range(start, end);
     dynamic countQuery = supabase
-        .from('listings')
-        .select('id')
-        .eq('status', 'active')
+        .from('products')
+        .select('id, categories!inner(name)')
         .gte('price', minimumPrice)
         .lte('price', maximumPrice);
-    if (search.isNotEmpty) countQuery = countQuery.ilike('title', '%$search%');
-    if (category != null) countQuery = countQuery.eq('category', category);
+    if (search.isNotEmpty) {
+      countQuery = countQuery.ilike('name', '%$search%');
+    }
+    if (category != null) {
+      countQuery = countQuery.eq('categories.name', category);
+    }
     final countRows = await countQuery;
 
     final products = <Product>[];
     for (final row in (response as List<dynamic>)) {
       products.add(_productFromRow(Map<String, dynamic>.from(row as Map)));
     }
-    if (countRows.isEmpty) {
-      final filtered = localBooks
-          .where(
-            (book) => book.price >= minimumPrice && book.price <= maximumPrice,
-          )
-          .where(
-            (book) =>
-                search.isEmpty ||
-                book.name.toLowerCase().contains(search.toLowerCase()),
-          )
-          .where((book) => category == null || book.category == category)
-          .toList();
-      if (sort == 'price_low') {
-        filtered.sort((a, b) => a.price.compareTo(b.price));
-      } else if (sort == 'price_high') {
-        filtered.sort((a, b) => b.price.compareTo(a.price));
-      }
-      final localStart = page * pageSize;
-      final localEnd = (localStart + pageSize).clamp(0, filtered.length);
-      return ProductPage(
-        products: localStart >= filtered.length
-            ? const []
-            : filtered.sublist(localStart, localEnd),
-        totalCount: filtered.length,
-      );
-    }
-
     return ProductPage(products: products, totalCount: countRows.length);
   }
 
@@ -85,28 +60,17 @@ class ProductRepository {
     if (localProduct.isNotEmpty) return localProduct.first;
 
     final response = await supabase
-        .from('listings')
+        .from('products')
         .select(
-          'id, title, description, price, category, condition, '
-          'listing_images(storage_path)',
+          'id, name, description, price, stock, image_url, categories!inner(name)',
         )
         .eq('id', id)
-        .eq('status', 'active')
         .single();
     return _productFromRow(Map<String, dynamic>.from(response as Map));
   }
 
   Product _productFromRow(Map<String, dynamic> row) {
-    final images = row['listing_images'];
-    final path = images is List && images.isNotEmpty
-        ? images.first['storage_path'] as String?
-        : null;
     final normalized = Map<String, dynamic>.from(row);
-    if (path != null) {
-      normalized['image_url'] = supabase.storage
-          .from('listing-images')
-          .getPublicUrl(path);
-    }
     return Product.fromMap(normalized);
   }
 }

@@ -8,30 +8,30 @@ class Product {
     required this.category,
     required this.condition,
     required this.price,
+    required this.stock,
     required this.imageUrl,
     required this.localImageUrl,
     required this.accent,
   });
 
   factory Product.fromMap(Map<String, dynamic> row) {
-    final images = row['listing_images'];
-    final firstImage =
-        row['image_url'] as String? ??
-        (images is List && images.isNotEmpty
-            ? images.first['storage_path'] as String?
-            : null);
-    final title = row['title'] as String? ?? 'Untitled book';
+    final firstImage = row['image_url'] as String?;
+    final title = row['name'] as String? ?? 'Untitled book';
+    final category = row['categories'] is Map
+        ? row['categories']['name'] as String?
+        : null;
 
     return Product(
-      id: row['id'] as String,
+      id: row['id'].toString(),
       name: title,
       description: row['description'] as String? ?? '',
-      category: row['category'] as String? ?? 'textbooks',
-      condition: row['condition'] as String? ?? 'good',
+      category: category ?? 'textbooks',
+      condition: 'good',
       price: (row['price'] as num?)?.toDouble() ?? 0,
+      stock: (row['stock'] as num?)?.toInt() ?? 0,
       imageUrl: firstImage,
       localImageUrl: _localImageFor(title),
-      accent: _accentFor(row['category'] as String?),
+      accent: _accentFor(category),
     );
   }
 
@@ -41,6 +41,7 @@ class Product {
   final String category;
   final String condition;
   final double price;
+  final int stock;
   final String? imageUrl;
   final String? localImageUrl;
   final Color accent;
@@ -97,6 +98,7 @@ const localBooks = [
     category: 'xianxia',
     condition: 'new',
     price: 350,
+    stock: 10,
     imageUrl: 'assets/covers/coiling_dragon.webp',
     localImageUrl: 'assets/covers/coiling_dragon.webp',
     accent: Color(0xFFD8B08C),
@@ -108,6 +110,7 @@ const localBooks = [
     category: 'xianxia',
     condition: 'new',
     price: 420,
+    stock: 8,
     imageUrl: 'assets/covers/desolate_era.webp',
     localImageUrl: 'assets/covers/desolate_era.webp',
     accent: Color(0xFFB9C5BC),
@@ -119,6 +122,7 @@ const localBooks = [
     category: 'xianxia',
     condition: 'like_new',
     price: 380,
+    stock: 12,
     imageUrl: 'assets/covers/a_will_eternal.webp',
     localImageUrl: 'assets/covers/a_will_eternal.webp',
     accent: Color(0xFFC8A39A),
@@ -130,6 +134,7 @@ const localBooks = [
     category: 'xuanhuan',
     condition: 'new',
     price: 460,
+    stock: 7,
     imageUrl: 'assets/covers/overgeared.webp',
     localImageUrl: 'assets/covers/overgeared.webp',
     accent: Color(0xFFD6B56F),
@@ -141,6 +146,7 @@ const localBooks = [
     category: 'xianxia',
     condition: 'good',
     price: 325,
+    stock: 9,
     imageUrl: 'assets/covers/perfect_world.webp',
     localImageUrl: 'assets/covers/perfect_world.webp',
     accent: Color(0xFFC9B18A),
@@ -152,6 +158,7 @@ const localBooks = [
     category: 'wuxia',
     condition: 'new',
     price: 395,
+    stock: 6,
     imageUrl: 'assets/covers/yama_rising.webp',
     localImageUrl: 'assets/covers/yama_rising.webp',
     accent: Color(0xFF9FA9B8),
@@ -163,6 +170,7 @@ const localBooks = [
     category: 'wuxia',
     condition: 'like_new',
     price: 410,
+    stock: 8,
     imageUrl: 'assets/covers/descent_of_the_demon_master.webp',
     localImageUrl: 'assets/covers/descent_of_the_demon_master.webp',
     accent: Color(0xFFC1A4A4),
@@ -174,6 +182,7 @@ const localBooks = [
     category: 'xuanhuan',
     condition: 'good',
     price: 300,
+    stock: 10,
     imageUrl: 'assets/covers/charm_of_soul_pets.webp',
     localImageUrl: 'assets/covers/charm_of_soul_pets.webp',
     accent: Color(0xFFD6B56F),

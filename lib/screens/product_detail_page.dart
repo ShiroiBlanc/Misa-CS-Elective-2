@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../models/product.dart';
 import '../providers/product_provider.dart';
+import '../providers/cart_provider.dart';
 import '../widgets/shop_app_bar.dart';
 import '../widgets/product_image.dart';
 
@@ -49,9 +50,16 @@ class ProductDetailPage extends ConsumerWidget {
               Text(item.description),
               const SizedBox(height: 28),
               FilledButton.icon(
-                onPressed: () {},
+                onPressed: item.stock == 0
+                    ? null
+                    : () {
+                        ref.read(cartProvider.notifier).add(item);
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(content: Text('Added to cart')),
+                        );
+                      },
                 icon: const Icon(Icons.shopping_cart_outlined),
-                label: const Text('Add to cart'),
+                label: Text(item.stock == 0 ? 'Out of stock' : 'Add to cart'),
               ),
             ],
           );

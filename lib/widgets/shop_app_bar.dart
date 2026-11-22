@@ -46,12 +46,33 @@ class ShopAppBar extends ConsumerWidget implements PreferredSizeWidget {
         ),
       ),
       actions: [
+        FutureBuilder<bool>(
+          future: supabase.rpc('is_admin'),
+          builder: (context, snapshot) {
+            if (snapshot.data != true) return const SizedBox.shrink();
+            return IconButton(
+              tooltip: 'Admin',
+              onPressed: () => context.push('/admin'),
+              icon: const Icon(Icons.admin_panel_settings_outlined),
+            );
+          },
+        ),
         IconButton(
           tooltip: isDark ? 'Switch to light mode' : 'Switch to dark mode',
           onPressed: ref.read(themeModeProvider.notifier).toggle,
           icon: Icon(
             isDark ? Icons.light_mode_outlined : Icons.dark_mode_outlined,
           ),
+        ),
+        IconButton(
+          tooltip: 'Cart',
+          onPressed: () => context.push('/cart'),
+          icon: const Icon(Icons.shopping_cart_outlined),
+        ),
+        IconButton(
+          tooltip: 'Order history',
+          onPressed: () => context.push('/orders'),
+          icon: const Icon(Icons.receipt_long_outlined),
         ),
         IconButton(
           tooltip: 'Sign out',
